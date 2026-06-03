@@ -1,0 +1,7 @@
+# Exclude compiled binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin/
