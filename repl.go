@@ -10,33 +10,7 @@ import (
 
 func startRepl(cfg *config) {
 	scanner := bufio.NewScanner(os.Stdin)
-	commands := map[string]cliCommand {
-		"exit": {
-			name:        	"exit",
-			description: 	"Exit the Pokedex",
-			callback:    	commandExit,
-		},
-		"help": {
-			name:			"help",
-			description: 	"Displays a help message",
-			callback:		commandHelp,
-			},
-		"map": {
-			name:			"map",
-			description: 	"Get the next page of locations",
-			callback:		commandMapf,
-		},
-		"mapb": {
-			name:			"mapb",
-			description: 	"Get the previous page of locations",
-			callback:		commandMapb,
-		},
-		"explore": {
-			name:			"explore",
-			description:	"Explore a location area",
-			callback:		commandExplore,
-		},
-	}
+	commands := getCommands()
 	for {
 		fmt.Print("Pokedex > ")
 		if !scanner.Scan() {
@@ -62,6 +36,51 @@ func startRepl(cfg *config) {
 	}
 }
 
+func getCommands() map[string]cliCommand {
+    return map[string]cliCommand {
+		"exit": {
+			name:        	"exit",
+			description: 	"Exit the Pokedex",
+			callback:    	commandExit,
+		},
+		"help": {
+			name:			"help",
+			description: 	"Displays a help message",
+			callback:		commandHelp,
+			},
+		"map": {
+			name:			"map",
+			description: 	"Get the next page of locations",
+			callback:		commandMapf,
+		},
+		"mapb": {
+			name:			"mapb",
+			description: 	"Get the previous page of locations",
+			callback:		commandMapb,
+		},
+		"explore": {
+			name:			"explore",
+			description:	"Explore a location area",
+			callback:		commandExplore,
+		},
+		"catch": {
+			name:			"catch",
+			description:	"Attempt to catch a pokemon",
+			callback:		commandCatch,
+		},
+		"inspect": {
+			name:			"inspect",
+			description:	"View details about a caught Pokemon",
+			callback:		commandInspect,
+		},
+		"pokedex": {
+			name:			"pokedex",
+			description:	"displays the current lsit of caught Pokemon",
+			callback:		commandPokedex,
+		},
+	}
+}
+
 func cleanInput(text string) []string {
 	lowerCase := strings.ToLower(text)
 	words := strings.Fields(lowerCase)
@@ -78,4 +97,5 @@ type config struct {
 	nextLocationsURL	*string
 	prevLocationsURL	*string
 	pokeapiClient 		pokeapi.Client
+	caughtPokemon		map[string]pokeapi.Pokemon
 }
